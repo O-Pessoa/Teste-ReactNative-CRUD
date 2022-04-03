@@ -1,14 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 type IUsuario = {
-  codigo: string;
-  nome: string;
-  nascimento: Date;
-  foto: string;
+  uid: string;
+  name: string;
+  birthDay: Date;
+  photo: string;
 };
 
 type IStateUsuario = {
-  [codigo: string]: IUsuario;
+  [uid: string]: IUsuario;
 };
 
 const initialState: IStateUsuario = {};
@@ -18,17 +18,17 @@ const usuarioSlice = createSlice({
   initialState,
   reducers: {
     add: (state, action: PayloadAction<IUsuario>) => {
-      state[action.payload.codigo] = action.payload;
+      state[action.payload.uid] = action.payload;
     },
-    rm: (state, action: PayloadAction<{codigo: IUsuario['codigo']}>) => {
-      delete state[action.payload.codigo];
+    rm: (state, action: PayloadAction<{uid: IUsuario['uid']}>) => {
+      delete state[action.payload.uid];
     },
     update: (
       state,
-      action: PayloadAction<Partial<IUsuario> & {codigo: IUsuario['codigo']}>,
+      action: PayloadAction<Partial<IUsuario> & {uid: IUsuario['uid']}>,
     ) => {
-      state[action.payload.codigo] = {
-        ...state[action.payload.codigo],
+      state[action.payload.uid] = {
+        ...state[action.payload.uid],
         ...action.payload,
       };
     },
