@@ -14,4 +14,5 @@ export const TextInput = styled(TxtInput).attrs({
 })`
   padding: 0px;
   background-color: ${({theme}) => theme.colors.backgroundSecondary};
+  color: ${({theme}) => theme.colors.text};
 `;
