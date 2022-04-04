@@ -1,26 +1,36 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Keyboard} from 'react-native';
 import TextInputWithLabel from '~/components/TextInputWithLabel';
 import * as S from './styles';
 
-import {useAppDispatch} from '~/services/store';
+import {useAppDispatch, useAppSelector} from '~/services/store';
 import {formatDate} from '~/utils/format';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '~/routes';
 import * as UserActions from '~/services/store/usuario/usuario.store';
 import Button from '~/components/Button';
+import {selectUsuario} from '~/services/store/usuario/usuario.selectors';
 
 type FormStackScreenProps = NativeStackScreenProps<RootStackParamList, 'Form'>;
 
-const Form: React.FC<FormStackScreenProps> = ({route}) => {
+const Form: React.FC<FormStackScreenProps> = ({route, navigation}) => {
   const uid = route.params?.uid;
 
   const dispatch = useAppDispatch();
+  const usuario = useAppSelector(state => selectUsuario(state, uid || ''));
 
   const [name, setName] = useState('');
   const [dateString, setDateString] = useState('');
   const [date, setDate] = useState<Date | undefined>(undefined);
+
+  useEffect(() => {
+    if (usuario) {
+      setName(usuario.name);
+      setDateString(formatDate(usuario.birthDay));
+      setDate(usuario.birthDay);
+    }
+  }, [usuario]);
 
   const handleSetDate = (text: string) => {
     let newText = text
@@ -52,7 +62,16 @@ const Form: React.FC<FormStackScreenProps> = ({route}) => {
   const handleOnSubmit = () => {
     if (date) {
       if (uid) {
-        dispatch(UserActions.update({birthDay: date, name, photo: '', uid}));
+        dispatch(
+          UserActions.update({
+            birthDay: date,
+            name,
+            photo:
+              'https://media-exp1.licdn.com/dms/image/C4E03AQGMs1jPwZNfOA/profile-displayphoto-shrink_200_200/0/1530399179900?e=1654732800&v=beta&t=Ck5WQAEeH8Rk0NFbbYlMez3lbpRcjBfKJLLttR4Cnrg',
+            uid,
+          }),
+        );
+        navigation.goBack();
       } else {
         dispatch(
           UserActions.add({
@@ -63,6 +82,7 @@ const Form: React.FC<FormStackScreenProps> = ({route}) => {
             uid: (Math.random() * 1e10).toFixed(),
           }),
         );
+        navigation.goBack();
       }
     } else {
       if (dateString) {
