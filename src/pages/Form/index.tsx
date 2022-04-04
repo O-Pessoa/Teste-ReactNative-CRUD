@@ -9,6 +9,7 @@ import {formatDate} from '~/utils/format';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '~/routes';
 import * as UserActions from '~/services/store/usuario/usuario.store';
+import * as userThunks from '~/services/store/usuario/usuario.thunks';
 import Button from '~/components/Button';
 import {selectUsuario} from '~/services/store/usuario/usuario.selectors';
 
@@ -19,6 +20,8 @@ const Form: React.FC<FormStackScreenProps> = ({route, navigation}) => {
 
   const dispatch = useAppDispatch();
   const usuario = useAppSelector(state => selectUsuario(state, uid || ''));
+
+  const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState('');
   const [dateString, setDateString] = useState('');
@@ -72,7 +75,7 @@ const Form: React.FC<FormStackScreenProps> = ({route, navigation}) => {
     }
   };
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = async () => {
     if (!photo.uri) {
       Alert.alert('Erro!', 'É necessário uma foto.');
       return;
@@ -89,14 +92,9 @@ const Form: React.FC<FormStackScreenProps> = ({route, navigation}) => {
         );
         navigation.goBack();
       } else {
-        dispatch(
-          UserActions.add({
-            birthDay: date,
-            name,
-            photo: photo.uri,
-            uid: (Math.random() * 1e10).toFixed(),
-          }),
-        );
+        setLoading(true);
+        await dispatch(userThunks.addUser(name, date, photo.uri));
+        setLoading(false);
         navigation.goBack();
       }
     } else {
@@ -147,7 +145,7 @@ const Form: React.FC<FormStackScreenProps> = ({route, navigation}) => {
           <Button text="Selecionar Foto" onPress={handleLaunchImageLibrary} />
         </S.BoxButton>
         <S.BoxButton>
-          <Button text="Enviar" onPress={handleOnSubmit} />
+          <Button text="Enviar" onPress={handleOnSubmit} loading={loading} />
         </S.BoxButton>
       </S.BoxButtons>
     </S.Container>

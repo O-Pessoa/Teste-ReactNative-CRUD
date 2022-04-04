@@ -37,3 +37,24 @@ export const deleteUser =
       return false;
     }
   };
+
+export const addUser =
+  (name: string, birthDate: Date, photo: string): AppThunk<Promise<boolean>> =>
+  async dispatch => {
+    try {
+      const {data} = await userApi.addUser(name, birthDate, photo);
+      if (data) {
+        dispatch(
+          userAction.add({
+            name: data.name,
+            birthDay: new Date(data.birthDate),
+            photo: data.photo,
+            uid: data.uid,
+          }),
+        );
+      }
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };

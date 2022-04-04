@@ -24,3 +24,15 @@ export const deleteUser = async (uid: string) => {
     throw error;
   }
 };
+
+export const addUser = async (name: string, birthDate: Date, photo: string) => {
+  try {
+    return await axiosInstance.post<IUserAPI>('/user', {
+      name,
+      birthDate: birthDate.toISOString(),
+      photo,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
