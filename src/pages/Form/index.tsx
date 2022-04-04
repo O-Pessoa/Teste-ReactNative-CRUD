@@ -41,6 +41,17 @@ const Form: React.FC<FormStackScreenProps> = ({route, navigation}) => {
       .replace(/^(\d{2})(\d{1,2})$/, '$1/$2')
       .replace(/^(\d{2})(\d{1,2})(\d{1,4})$/, '$1/$2/$3');
     setDateString(newText);
+    if (newText.length === 10) {
+      const matchDate = newText.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+      if (matchDate) {
+        const day = parseInt(matchDate[1], 10);
+        const month = parseInt(matchDate[2], 10) - 1;
+        const year = parseInt(matchDate[3], 10);
+
+        const newDate = new Date(year, month, day);
+        setDate(newDate);
+      }
+    }
   };
 
   const handelOnEndEditingDate = () => {
