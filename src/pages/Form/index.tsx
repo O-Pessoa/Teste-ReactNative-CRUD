@@ -8,7 +8,6 @@ import {formatDate} from '~/utils/format';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '~/routes';
-import * as UserActions from '~/services/store/usuario/usuario.store';
 import * as userThunks from '~/services/store/usuario/usuario.thunks';
 import Button from '~/components/Button';
 import {selectUsuario} from '~/services/store/usuario/usuario.selectors';
@@ -82,14 +81,9 @@ const Form: React.FC<FormStackScreenProps> = ({route, navigation}) => {
     }
     if (date) {
       if (uid) {
-        dispatch(
-          UserActions.update({
-            birthDay: date,
-            name,
-            photo: photo.uri,
-            uid,
-          }),
-        );
+        setLoading(true);
+        await dispatch(userThunks.updateUser(uid, name, date, photo.uri));
+        setLoading(false);
         navigation.goBack();
       } else {
         setLoading(true);

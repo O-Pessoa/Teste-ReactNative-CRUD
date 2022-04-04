@@ -36,3 +36,21 @@ export const addUser = async (name: string, birthDate: Date, photo: string) => {
     throw error;
   }
 };
+
+export const updateUser = async (
+  uid: string,
+  name: string,
+  birthDate: Date,
+  photo: string,
+) => {
+  try {
+    return await axiosInstance.put<boolean>('/user', {
+      uid,
+      name,
+      birthDate: birthDate.toISOString(),
+      photo,
+    });
+  } catch (error) {
+    throw error;
+  }
+};

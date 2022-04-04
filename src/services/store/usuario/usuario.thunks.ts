@@ -52,8 +52,35 @@ export const addUser =
             uid: data.uid,
           }),
         );
+        return true;
       }
-      return true;
+      return false;
+    } catch (error) {
+      return false;
+    }
+  };
+
+export const updateUser =
+  (
+    uid: string,
+    name: string,
+    birthDate: Date,
+    photo: string,
+  ): AppThunk<Promise<boolean>> =>
+  async dispatch => {
+    try {
+      const {data} = await userApi.updateUser(uid, name, birthDate, photo);
+      if (data) {
+        dispatch(
+          userAction.update({
+            name: name,
+            birthDay: birthDate,
+            photo: photo,
+            uid: uid,
+          }),
+        );
+      }
+      return data;
     } catch (error) {
       return false;
     }
