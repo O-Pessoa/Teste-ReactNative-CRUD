@@ -147,7 +147,7 @@ const Form: React.FC<FormStackScreenProps> = ({route, navigation}) => {
           <Button text="Selecionar Foto" onPress={handleLaunchImageLibrary} />
         </S.BoxButton>
         <S.BoxButton>
-          <Button text="Submit" onPress={handleOnSubmit} />
+          <Button text="Enviar" onPress={handleOnSubmit} />
         </S.BoxButton>
       </S.BoxButtons>
     </S.Container>
