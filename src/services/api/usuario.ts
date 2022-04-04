@@ -16,3 +16,11 @@ export const getAll = async () => {
     throw error;
   }
 };
+
+export const deleteUser = async (uid: string) => {
+  try {
+    return await axiosInstance.delete<boolean>(`/user/${uid}`);
+  } catch (error) {
+    throw error;
+  }
+};

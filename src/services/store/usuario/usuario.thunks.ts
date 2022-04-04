@@ -23,3 +23,17 @@ export const getAll = (): AppThunk<Promise<boolean>> => async dispatch => {
     return false;
   }
 };
+
+export const deleteUser =
+  (uid: string): AppThunk<Promise<boolean>> =>
+  async dispatch => {
+    try {
+      const {data} = await userApi.deleteUser(uid);
+      if (data) {
+        dispatch(userAction.rm({uid}));
+      }
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };

@@ -4,8 +4,6 @@ import {selectUsuarios} from '~/services/store/usuario/usuario.selectors';
 import AddButton from '~/components/AddButton';
 import * as S from './styles';
 
-import * as UserActions from '~/services/store/usuario/usuario.store';
-
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '~/routes';
 import {FlatList, ListRenderItem} from 'react-native';
@@ -29,7 +27,7 @@ const Home: React.FC<HomeStackScreenProps> = ({navigation}) => {
     loadingData();
   }, [loadingData]);
 
-  const deleteUser = (uid: string) => dispatch(UserActions.rm({uid}));
+  const deleteUser = (uid: string) => dispatch(userThunks.deleteUser(uid));
   const navigateToEdit = (uid: string) => navigation.navigate('Form', {uid});
   const goToForm = () => navigation.navigate('Form');
   const renderItem: ListRenderItem<typeof usuarios[number]> = ({item}) => (
