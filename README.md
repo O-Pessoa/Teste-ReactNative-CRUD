@@ -1,0 +1,2 @@
+# É necessário subir o back-end do projeto disponível [aqui](https://github.com/O-Pessoa/Teste-ReactNative-CRUD-Back), caso use o projeto que está na [main](https://github.com/O-Pessoa/Teste-ReactNative-CRUD/tree/main)
+# Está disponível uma branch sem integração com a API REST [semAPI](https://github.com/O-Pessoa/Teste-ReactNative-CRUD/tree/semAPI)
